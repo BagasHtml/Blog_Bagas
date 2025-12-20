@@ -1,6 +1,8 @@
 ---
-import Bocchi from '../assets/bocchi-bocchi-the-rock.png';
+import Bagas from '../assets/bagas2.png';
 import Layout from '../layouts/BlogPost.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import BaseHead from '../components/BaseHead.astro';
 ---
 
 <div class="container">
@@ -8,13 +10,15 @@ import Layout from '../layouts/BlogPost.astro';
 	title="About Me"
 	description="Bagas Tresna Nanda Mustida Sakti - Software Engineering Student | Web Developer | Tech Enthusiast"
 	pubDate={new Date('18 December 2025')}
-	heroImage={Bocchi}
+	heroImage={Bagas}
 >
-
+<head>
+<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 <link 
 	rel="stylesheet" 
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-/>
+>
+</head>
 
 	<h1 class="introduction">
 		Hello!, I'm Bagas Tresna Nanda Mustida Sakti <i class="bi bi-braces-asterisk"></i>
@@ -323,6 +327,7 @@ import Layout from '../layouts/BlogPost.astro';
 			opacity: 1;
 		}
 	}
+
 	.introduction {
 		font-size: 2.5rem;
 		font-weight: bold;
