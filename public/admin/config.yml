@@ -1,13 +1,20 @@
 # Decap CMS Configuration untuk Blog Bagas
 # Dokumentasi: https://decapcms.org/docs/configuration-options/
 
+# Tampilan & branding dashboard
+site_url: https://blog-bagas.web.app  # Alamat website utama
+display_url: https://blog-bagas.web.app  # Link "View site" di header CMS
+logo_url: /favicon.svg  # Logo CMS (ganti path jika mau logo khusus)
+show_preview_links: true  # Tampilkan link preview di editor
+
 # Backend configuration - menggunakan GitHub
 backend:
   name: github
   repo: BagasHtml/Blog_Bagas  # Format: username/repo-name
   branch: main  # Branch yang akan di-commit
-  base_url: https://api.netlify.com  # OAuth endpoint
-  auth_endpoint: auth
+  # OAuth proxy milik sendiri di Cloudflare Pages (karena hosting di Firebase).
+  base_url: https://blog-cms-oauth-3m3.pages.dev
+  auth_endpoint: api/auth
 
 # Publish mode
 publish_mode: editorial_workflow  # Enable draft, review, dan ready states
@@ -33,19 +40,19 @@ collections:
     format: "frontmatter"
     editor:
       preview: true
-    
+
     # Fields - harus match dengan schema di content.config.ts
     fields:
       - label: "Title"
         name: "title"
         widget: "string"
         hint: "Judul artikel/project"
-        
+
       - label: "Description"
         name: "description"
         widget: "string"
         hint: "Deskripsi singkat artikel"
-        
+
       - label: "Publish Date"
         name: "pubDate"
         widget: "datetime"
@@ -53,7 +60,7 @@ collections:
         date_format: "MMM DD YYYY"
         time_format: false
         hint: "Tanggal publikasi artikel"
-        
+
       - label: "Updated Date"
         name: "updatedDate"
         widget: "datetime"
@@ -62,7 +69,7 @@ collections:
         time_format: false
         required: false
         hint: "Tanggal update artikel (opsional)"
-        
+
       - label: "Hero Image"
         name: "heroImage"
         widget: "image"
@@ -71,7 +78,7 @@ collections:
         media_library:
           config:
             multiple: false
-        
+
       - label: "Body"
         name: "body"
         widget: "markdown"
@@ -85,16 +92,79 @@ collections:
           - heading-three
           - heading-four
           - quote
-          - code-block
           - bulleted-list
           - numbered-list
 
     # Sortir berdasarkan tanggal terbaru
     sortable_fields: ['pubDate', 'title']
-    view_filters:
-      - label: "Drafts"
-        field: "draft"
-        pattern: true
-    
+
     # Preview configuration
     summary: "{{title}} - {{pubDate}}"
+
+  # About Me Collection (single file)
+  - name: "about"
+    label: "About Me"
+    label_singular: "About"
+    file: "src/content/about/about.md"  # Edit halaman About langsung dari CMS
+    editor:
+      preview: true
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "Judul halaman (tampil di browser)"
+
+      - label: "Name"
+        name: "name"
+        widget: "string"
+        hint: "Nama lengkap kamu"
+
+      - label: "Description"
+        name: "description"
+        widget: "string"
+        hint: "Deskripsi singkat untuk SEO"
+
+      - label: "Tagline"
+        name: "tagline"
+        widget: "string"
+        hint: "Satu kalimat di bawah nama"
+
+      - label: "Publish Date"
+        name: "pubDate"
+        widget: "datetime"
+        format: "MMM DD YYYY"
+        date_format: "MMM DD YYYY"
+        time_format: false
+
+      - label: "Updated Date"
+        name: "updatedDate"
+        widget: "datetime"
+        format: "MMM DD YYYY"
+        date_format: "MMM DD YYYY"
+        time_format: false
+        required: false
+
+      - label: "Hero Image"
+        name: "heroImage"
+        widget: "image"
+        required: false
+        hint: "Foto profil kamu"
+        media_library:
+          config:
+            multiple: false
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Isi lengkap halaman About (panduan: gunakan ## untuk judul bagian)"
+        buttons:
+          - bold
+          - italic
+          - code
+          - link
+          - heading-two
+          - heading-three
+          - heading-four
+          - quote
+          - bulleted-list
+          - numbered-list

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Blog Bagas - Content Manager</title>
+  <link rel="icon" href="/favicon.svg" />
+
+  <script is:inline>
+    // Decap CMS memuat config.yml relatif terhadap URL halaman.
+    // Pastikan selalu berakhiran "/" agar config ter-resolve ke /admin/config.yml.
+    if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('index.html')) {
+      window.location.replace(window.location.pathname + '/');
+    }
+  </script>
+
+  <!-- Decap CMS styles -->
+  <link href="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --brand: #2337ff;
+      --brand-dark: #0f1b8f;
+    }
+
+    /* Loading screen (muncul sebelum Decap CMS render) */
+    #loader {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+    #loader .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    #loader .brand img {
+      width: 36px;
+      height: 36px;
+    }
+    #loader .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.15);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    #loader .loader-text {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.85rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Theme Decap CMS: sidebar & header pakai warna brand */
+    *[class*="sidebar"] {
+      background: linear-gradient(180deg, #0f172a, #1e293b) !important;
+    }
+    *[class*="sidebar"] *[class*="linkActive"], 
+    *[class*="sidebar"] a:hover {
+      color: #fff !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+    *[class*="AppHeader"] {
+      background: linear-gradient(90deg, var(--brand), var(--brand-dark)) !important;
+      color: #fff !important;
+    }
+    *[class*="AppHeader"] a,
+    *[class*="AppHeader"] span {
+      color: #fff !important;
+    }
+    button[class*="buttonPrimary"],
+    *[class*="buttonPrimary"] {
+      background-color: var(--brand) !important;
+      border-color: var(--brand) !important;
+    }
+    *[class*="buttonPrimary"]:hover {
+      background-color: var(--brand-dark) !important;
+    }
+    *[class*="logoWrap"] {
+      color: #fff !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading indicator -->
+  <div id="nc-root"></div>
+
+  <div id="loader" aria-hidden="true">
+    <div class="brand">
+      <img src="/favicon.svg" alt="" />
+      <span>Blog Bagas</span>
+    </div>
+    <div class="spinner"></div>
+    <div class="loader-text">Loading Content Manager...</div>
+  </div>
+
+  <!-- Decap CMS script -->
+  <script is:inline src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+  <script is:inline>
+    // Custom preview styles (opsional)
+    CMS.registerPreviewStyle("https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.css");
+
+    // Hilangkan loading screen begitu Decap CMS sudah render
+    var interval = setInterval(function () {
+      var root = document.getElementById('nc-root');
+      if (root && root.childElementCount > 0) {
+        clearInterval(interval);
+        var loader = document.getElementById('loader');
+        if (loader) {
+          loader.style.opacity = '0';
+          setTimeout(function () { loader.remove(); }, 400);
+        }
+      }
+    }, 300);
+  </script>
+</body>
+</html>
